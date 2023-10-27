@@ -100,4 +100,43 @@ class Square {
     }
 }
 
-module.exports = { Ship, Gameboard, Square };
+class Player {
+    constructor() {
+        this.previouslyPlayed = []
+        this.ai = false
+        this.selectedSquare = null
+    }
+
+    attack(square, targetBoard) {
+
+    }
+    doTurnAction(board) {
+        if (this.ai = true) {
+            doAITurnAction(board)
+        } else {
+            doPlayerAction(board)
+        }
+    }
+    doAITurnAction(board) {
+        let options = board.board
+        options.flat().filter(square => !this.previouslyPlayed.includes(square))
+        const randomIndex = Math.floor(Math.random() * options.length)
+        let selectedSquare = options[randomIndex]
+        this.previouslyPlayed.push(selectedSquare)
+        return selectedSquare
+    }
+
+    doPlayerTurnAction(board) {
+        this.attack(selectedSquare, board)
+    }
+
+}
+
+class Game {
+    constructor() {
+
+    }
+}
+
+
+module.exports = { Ship, Gameboard, Square, Player, Game };
