@@ -7,18 +7,19 @@ class Ship {
 
     hit() {
         this.timesHit += 1
+        this.sunk = this.isSunk()
     }
 
     isSunk() {
-        if (this.timesHit >= this.length) {
-            this.sunk = true
-        }
+        return this.timesHit >= this.length
     }
 }
 
 class Gameboard {
     constructor() {
         this.board = this.createBoard()
+        this.missedShots = []
+        this.ships = []
     }
 
     createBoard() {
@@ -35,28 +36,58 @@ class Gameboard {
     }
 
     getSquare(x, y) {
-        return this.board[x][y]
+        if(this.board[x] && this.board[x][y]) {
+            return this.board[x][y]
+        } else {
+            return null
+        }
     }
 
     placeShipVertically(x, y, length) {
         // Get Squares for each place a ship should be placed
         let shipPositions = []
         for (let i=0; i < length; i++) {
-            let square = this.getSquare(x,y-i)
+            let square = this.getSquare(x,y+i)
             shipPositions.push(square)
         }
         // Make sure all of the Ship Positions are valid
         if (!shipPositions.every(element => element != null && !element.occupied)) {
             console.log("There is not enough space to place a ship here")
-            return false
+            return null
         }
-        // create the new Ship object
+        // create the new Ship object and log it in ships array
         const ship = new Ship(length)
+        this.ships.push(ship)
         // set the occupant of each square to the ship and make it as occupied
-        for (square of shipPositions) {
+        for (let square of shipPositions) {
             square.occupant = ship
             square.occupied = true
         }
+    }
+
+    getShip(square) {
+        return square.occupant
+    }
+
+    allShipsSunk() {
+        console.log(`The ships in the array are ${JSON.stringify(this.ships, null, 2)}`)
+        for (let ship of this.ships) {
+            console.log(`Ship Length: ${ship.length}, Times Hit: ${ship.timesHit}, Is Sunk: ${ship.sunk}`);
+        }
+        return this.ships.every(ship => ship.sunk)
+    }
+
+    missedShot(x, y) {
+        this.missedShots.push([x, y])
+    }
+
+    receiveAttack(x, y) {
+     let ship = this.getShip(this.getSquare(x, y))
+     if (ship) {
+        ship.hit()
+     }   else {
+        this.missedShot(x, y)
+     }
     }
 }
 
