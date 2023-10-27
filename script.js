@@ -1,6 +1,6 @@
 class Ship {
-    constructor() {
-        this.length = 1
+    constructor(length) {
+        this.length = length
         this.timesHit = 0
         this.sunk = false
     }
@@ -15,3 +15,11 @@ class Ship {
         }
     }
 }
+
+class Gameboard {
+    constructor() {
+
+    }
+}
+
+module.exports = { Ship, Gameboard };
