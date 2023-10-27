@@ -108,8 +108,9 @@ class Player {
     }
 
     attack(square, targetBoard) {
-
+        targetBoard.receiveAttack(square.x, square.y)
     }
+
     doTurnAction(board) {
         if (this.ai = true) {
             doAITurnAction(board)
@@ -134,7 +135,38 @@ class Player {
 
 class Game {
     constructor() {
+        this.activePlayer = null
+        // TODO figure out how to structure the game loop such that we can dynamically reference
+        // the player and the players board
+    }
 
+    initialize() {
+        let playerOne = new Player()
+        this.activePlayer = playerOne
+        let playerTwo = new Player()
+        playerTwo.ai = true
+        playerOneBoard = new Gameboard()
+        playerTwoBoard = new Gameboard()
+        setUpShips(playerOneBoard)
+        setUpShips(playerTwoBoard)
+    }
+
+    setUpShips(board) {
+        board.placeShipVertically(2, 2)
+        board.placeShipVertically(4, 2)
+        board.placeShipVertically(6, 2)
+    }
+
+    gameLoopInitialize() {
+        this.activePlayer.
+    }
+
+    switchTurn() {
+        if (this.activePlayer === playerOne) {
+            this.activePlayer = playerTwo
+        } else {
+            this.activePlayer = playerOne
+        }
     }
 }
 
